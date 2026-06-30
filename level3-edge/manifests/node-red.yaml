@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nodered-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodered-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodered
+  template:
+    metadata:
+      labels:
+        app: nodered
+    spec:
+      nodeSelector:
+        linea: ensamblaje1
+      containers:
+      - name: nodered
+        image: nodered/node-red:latest
+        ports:
+        - containerPort: 1880
+        volumeMounts:
+        - name: nodered-data
+          mountPath: /data
+      volumes:
+      - name: nodered-data
+        persistentVolumeClaim:
+          claimName: nodered-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodered-service
+spec:
+  type: ClusterIP
+  selector:
+    app: nodered
+  ports:
+    - protocol: TCP
+      port: 1880
+      targetPort: 1880
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nodered-ingress
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nodered-service
+            port:
+              number: 1880
