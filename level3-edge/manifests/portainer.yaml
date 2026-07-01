@@ -8,13 +8,14 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: portainer-crb
-roles:
-- kind: ClusterRole
-  name: cluster-admin
 subjects:
 - kind: ServiceAccount
   name: portainer-sa
   namespace: default
+roleRef: # 🔑 Sintaxis corregida (en singular y con la estructura estándar)
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -43,7 +44,7 @@ spec:
       labels:
         app: portainer
     spec:
-      serviceAccountName: portainer-sa # 🔑 Aquí le asignamos los superpoderes de administrador
+      serviceAccountName: portainer-sa
       containers:
       - name: portainer
         image: portainer/portainer-ce:latest
