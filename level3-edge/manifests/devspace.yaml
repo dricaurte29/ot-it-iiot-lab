@@ -1,0 +1,22 @@
+version: v2beta1
+name: level1-plc
+
+# 🔑 BUENA PRÁCTICA: No definimos "deployments" aquí porque de eso ya se encarga ArgoCD.
+# Solo definimos las reglas de desarrollo en vivo sobre el Pod existente.
+dev:
+  plc-dev:
+    # Busca el pod que tenga esta etiqueta (creado por ArgoCD)
+    labelSelector:
+      app: plc-virtual
+    # Sincroniza tu carpeta local actual con la carpeta /app dentro del contenedor
+    sync:
+    - path: ./:/app
+      excludePaths:
+      - .git/
+      - devspace.yaml
+    # Abre una terminal interactiva automática ejecutando los requerimientos industriales
+    terminal:
+      command: cd /app && pip install asyncua && python server.py
+    # Reenvía el puerto del clúster a tu máquina local para que puedas probar el PLC desde Windows
+    ports:
+    - portMapping: "4840:4840"
