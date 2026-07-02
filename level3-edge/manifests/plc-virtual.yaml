@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plc-virtual-deployment
+  namespace: default
+  labels:
+    app: plc-virtual
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: plc-virtual
+  template:
+    metadata:
+      labels:
+        app: plc-virtual
+    spec:
+      containers:
+      - name: plc-server
+        image: python:3.10-slim
+        command: ["sleep", "infinity"] # Mantiene el pod vivo para desarrollo
+        ports:
+        - containerPort: 4840 # Puerto estándar de OPC-UA
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: plc-virtual-service
+  namespace: default
+spec:
+  ports:
+  - name: opcua
+    port: 4840
+    targetPort: 4840
+  selector:
+    app: plc-virtual
