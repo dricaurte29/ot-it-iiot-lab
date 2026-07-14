@@ -1,0 +1,22 @@
+version: v2beta1
+name: plc-virtual-dev
+
+dev:
+  plc-sim:
+    # 1. Busca el pod del PLC usando las etiquetas de tu plc-virtual.yaml
+    labelSelector:
+      app: plc-virtual
+    
+    # 2. Sincroniza los archivos de esta carpeta local con el contenedor
+    sync:
+    - path: ./:/app
+      excludePaths:
+      - .devspace/
+    
+    # 3. Abre una terminal interactiva instalando la librería y corriendo el script
+    terminal:
+      command: cd /app && pip install asyncua && python server.py
+    
+    # 4. 🔑 SINTAXIS CORREGIDA PARA LOS PUERTOS
+    ports:
+    - port: "4840:4840"

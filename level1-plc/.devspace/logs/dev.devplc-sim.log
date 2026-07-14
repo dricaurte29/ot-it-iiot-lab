@@ -1,0 +1,9 @@
+{"level":"info","msg":"dev:plc-sim Waiting for pod to become ready...","time":"2026-07-14T10:48:34-05:00"}
+{"level":"warning","msg":"dev:plc-sim DevSpace is waiting, because Pod plc-virtual-deployment-bd5f6bbfd-9bwcd has status: ContainerCreating","time":"2026-07-14T10:48:45-05:00"}
+{"level":"warning","msg":"dev:plc-sim DevSpace is waiting, because Pod plc-virtual-deployment-bd5f6bbfd-9bwcd has status: ContainerCreating","time":"2026-07-14T10:48:55-05:00"}
+{"level":"info","msg":"dev:plc-sim Selected pod plc-virtual-deployment-bd5f6bbfd-9bwcd","time":"2026-07-14T10:49:03-05:00"}
+{"level":"info","msg":"dev:plc-sim ports Port forwarding started on: 4840 -\u003e 4840","time":"2026-07-14T10:49:04-05:00"}
+{"level":"info","msg":"dev:plc-sim sync  Sync started on: ./ \u003c-\u003e /app","time":"2026-07-14T10:49:08-05:00"}
+{"level":"info","msg":"dev:plc-sim sync  Waiting for initial sync to complete","time":"2026-07-14T10:49:08-05:00"}
+{"level":"info","msg":"dev:plc-sim sync  Initial sync completed","time":"2026-07-14T10:49:10-05:00"}
+{"level":"info","msg":"dev:plc-sim term  Opening shell to plc-server:plc-virtual-deployment-bd5f6bbfd-9bwcd (pod:container)","time":"2026-07-14T10:49:11-05:00"}
