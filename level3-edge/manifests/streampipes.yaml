@@ -20,7 +20,7 @@ spec:
       containers:
       # --- Contenedor 1: Interfaz Web ---
       - name: ui
-        image: apache/streampipes-ui:0.93.0
+        image: apachestreampipes/ui:0.93.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
@@ -28,7 +28,7 @@ spec:
       
       # --- Contenedor 2: Backend Core ---
       - name: backend
-        image: apache/streampipes-backend:0.93.0
+        image: apachestreampipes/backend:0.93.0
         imagePullPolicy: IfNotPresent
         env:
         - name: SP_COUCHDB_HOST
@@ -38,7 +38,7 @@ spec:
 
       # --- Contenedor 3: Worker de Conectores (OPC-UA) ---
       - name: connect-worker
-        image: apache/streampipes-connect-worker-main:0.93.0
+        image: apachestreampipes/connect-worker-main:0.93.0
         imagePullPolicy: IfNotPresent
         env:
         - name: SP_COUCHDB_HOST
