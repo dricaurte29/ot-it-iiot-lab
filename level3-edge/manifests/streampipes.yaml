@@ -7,6 +7,8 @@ metadata:
     app: streampipes
 spec:
   replicas: 1
+  # 20 minutos de tolerancia para permitir descargas de imágenes pesadas en Bogotá
+  progressDeadlineSeconds: 1200
   selector:
     matchLabels:
       app: streampipes
@@ -19,6 +21,7 @@ spec:
       # --- Contenedor 1: Interfaz Web ---
       - name: ui
         image: apache/streampipes-ui:0.93.0
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
           name: http
@@ -26,6 +29,7 @@ spec:
       # --- Contenedor 2: Backend Core ---
       - name: backend
         image: apache/streampipes-backend:0.93.0
+        imagePullPolicy: IfNotPresent
         env:
         - name: SP_COUCHDB_HOST
           value: "localhost"
@@ -35,6 +39,7 @@ spec:
       # --- Contenedor 3: Worker de Conectores (OPC-UA) ---
       - name: connect-worker
         image: apache/streampipes-connect-worker-main:0.93.0
+        imagePullPolicy: IfNotPresent
         env:
         - name: SP_COUCHDB_HOST
           value: "localhost"
@@ -46,16 +51,19 @@ spec:
       # --- Contenedor 4: Base de Datos CouchDB ---
       - name: couchdb
         image: couchdb:3.3.1
+        imagePullPolicy: IfNotPresent
         env:
         - name: COUCHDB_USER
           value: "admin"
         - name: COUCHDB_PASSWORD
           value: "admin"
 
-      # --- Contenedor 5: Consul ---
+      # --- Contenedor 5: Consul (Sintaxis de Entrada Corregida) ---
       - name: consul
         image: hashicorp/consul:1.15.2
-        command: ["agent", "-dev", "-client", "0.0.0.0"]
+        imagePullPolicy: IfNotPresent
+        command: ["consul"]
+        args: ["agent", "-dev", "-client", "0.0.0.0"]
 ---
 apiVersion: v1
 kind: Service
@@ -69,4 +77,4 @@ spec:
   ports:
   - port: 8082
     targetPort: 80
-    nodePort: 30082 # <--- Puerto para acceder desde tu navegador en Windows
+    nodePort: 30082 # Puerto mapeado en tu localhost de Windows para acceder a la UI
